@@ -1,6 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { SorteosService } from './sorteos.service';
-import { CreateSorteoDTO } from './dtos/sorteo.dto';
+import { CreateSorteoDTO, UpdateSorteoDTO } from './dtos/sorteo.dto';
 
 @Controller('sorteos')
 export class SorteosController {
@@ -15,5 +23,20 @@ export class SorteosController {
   createSorteo(@Body() newSorteo: CreateSorteoDTO) {
     const { titulo, categoria } = newSorteo;
     return this.sorteoService.createSorteo(titulo, categoria);
+  }
+
+  @Delete(':/sorteo')
+  deleteSorteo(@Param('sorteo') sorteo: string) {
+    const id = parseInt(sorteo);
+    return this.sorteoService.deleteSorteo(id);
+  }
+
+  @Patch(':sorteo')
+  updateSorteo(
+    @Param('sorteo') sorteo: string,
+    @Body() updateFields: UpdateSorteoDTO,
+  ) {
+    const id = parseInt(sorteo);
+    return this.sorteoService.updateSorteo(id, updateFields);
   }
 }

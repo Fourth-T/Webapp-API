@@ -64,11 +64,21 @@ export class SorteosService {
     return sorteo;
   }
 
-  updateSorteo() {
+  updateSorteo(id: number, updateFields: any) {
+    const sorteo = this.getSorteoById(id);
+    const updatedSorteo = Object.assign(sorteo, updateFields);
+    this.sorteos = this.sorteos.map((sorteo) =>
+      sorteo.id === id ? updateFields : sorteo,
+    );
+    return updatedSorteo;
+  }
+
+  deleteSorteo(id: number) {
+    this.sorteos = this.sorteos.filter((sorteo) => sorteo.id !== id);
     return true;
   }
 
-  deleteSorteo() {
-    return true;
+  getSorteoById(id: number): Sorteo {
+    return this.sorteos.find((sorteo) => sorteo.id === id);
   }
 }
